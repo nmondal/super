@@ -1,0 +1,13 @@
+tables:
+  posts : https://jsonplaceholder.typicode.com/posts
+  users : https://jsonplaceholder.typicode.com/users
+
+queries:
+  sql_inline : select userId, title from posts
+  sql_file : _demo
+
+transforms:
+   t1 :
+     - sql_inline
+     - |
+       def(item){ /* do something here */ }
