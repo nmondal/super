@@ -26,15 +26,20 @@ public class SelectHandler {
 
     private List toList(JsonNode node, List<String> fields){
         List rows = new ArrayList<>();
+        final boolean noProject = fields.isEmpty();
         if ( node.isArray() ){
             JSONArray jsonArray = node.getArray();
             for ( int i = 0 ; i < jsonArray.length(); i++ ){
                 JSONObject o = (JSONObject) jsonArray.get(i);
-                JSONObject p = new JSONObject();
-                for ( String f : fields ){
-                    p.put(f,o.get(f));
+                if ( noProject ){
+                    rows.add(o);
+                } else {
+                    JSONObject p = new JSONObject();
+                    for ( String f : fields ){
+                        p.put(f,o.get(f));
+                    }
+                    rows.add(p);
                 }
-                rows.add(p);
             }
         }
         return rows;
@@ -46,11 +51,13 @@ public class SelectHandler {
            Table table =  (Table)((PlainSelect)selectBody).getFromItem();
            String tableName = table.getName();
            List<SelectItem> selectItems = ((PlainSelect)selectBody).getSelectItems();
-           List<String> fields = new ArrayList<>();
-           for ( SelectItem item : selectItems ){
-               fields.add( item.toString() );
+           List<String> fields = Collections.emptyList();
+           if ( !selectItems.isEmpty() ){
+               fields = new ArrayList<>();
+               for ( SelectItem item : selectItems ){
+                   fields.add( item.toString() );
+               }
            }
-
            String url = tables.get(tableName);
            RestHandler restHandler = new RestHandler(url);
            JsonNode res = restHandler.getAndWaitAsync();
