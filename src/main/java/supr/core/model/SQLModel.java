@@ -2,8 +2,6 @@ package supr.core.model;
 
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
-import zoomba.lang.core.collections.ZArray;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +38,4 @@ public class SQLModel {
         return execute(Collections.emptyMap(), args);
     }
 
-    public Object execute(){
-        return execute(ZArray.EMPTY_ARRAY);
-    }
 }

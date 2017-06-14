@@ -3,8 +3,8 @@ tables:
   users : https://jsonplaceholder.typicode.com/users
 
 queries:
-  sql_inline : select * from posts
-  sql_file : _demo
+  sql_inline : select * from posts where posts.id < 10
+  sql_join : _/demo
 
 transforms:
    t1 :
