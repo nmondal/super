@@ -52,7 +52,7 @@ public class SelectHandler {
            String tableName = table.getName();
            List<SelectItem> selectItems = ((PlainSelect)selectBody).getSelectItems();
            List<String> fields = Collections.emptyList();
-           if ( !selectItems.isEmpty() ){
+           if ( !String.valueOf(selectItems.get(0)).equals("*") ){
                fields = new ArrayList<>();
                for ( SelectItem item : selectItems ){
                    fields.add( item.toString() );

@@ -3,7 +3,7 @@ tables:
   users : https://jsonplaceholder.typicode.com/users
 
 queries:
-  sql_inline : select userId, title from posts
+  sql_inline : select * from posts
   sql_file : _demo
 
 transforms:
