@@ -8,8 +8,8 @@ import org.json.JSONObject;
 import zoomba.lang.core.operations.Function;
 import zoomba.lang.core.operations.ZJVMAccess;
 
-import javax.script.ScriptContext;
-import javax.script.SimpleScriptContext;
+import javax.script.Bindings;
+import javax.script.SimpleBindings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,13 +36,13 @@ public class SelectHandler {
 
         final boolean noProject = fields.isEmpty();
         if ( node.isArray() ){
-            SimpleScriptContext simpleScriptContext = new SimpleScriptContext();
+            Bindings context = new SimpleBindings();
             JSONArray jsonArray = node.getArray();
             for ( int i = 0 ; i < jsonArray.length(); i++ ){
                 JSONObject o = (JSONObject) jsonArray.get(i);
                 Map m = fromJSON(o);
-                simpleScriptContext.setAttribute(tableName,m, ScriptContext.ENGINE_SCOPE );
-                if (! expressionHandler.predicate(simpleScriptContext)){ continue; }
+                context.put(tableName, m );
+                if (! expressionHandler.test(context)){ continue; }
                 if ( noProject ){
                     rows.add(o);
                 } else {
@@ -82,17 +82,15 @@ public class SelectHandler {
 
         ExpressionHandler joinExpression = new ExpressionHandler( join.getOnExpression() );
         List rows = new ArrayList<>();
-        SimpleScriptContext simpleScriptContext = new SimpleScriptContext();
-
-
+        Bindings context = new SimpleBindings();
 
         for ( int i = 0 ; i < lArray.length(); i++ ){
             Map l = fromJSON((JSONObject) lArray.get(i));
             for ( int j = 0 ; j < rArray.length(); j++ ){
                 Map r = fromJSON((JSONObject) rArray.get(j));
-                simpleScriptContext.setAttribute(lTableName,l,ScriptContext.ENGINE_SCOPE);
-                simpleScriptContext.setAttribute(rTableName,r,ScriptContext.ENGINE_SCOPE);
-                if (! joinExpression.predicate(simpleScriptContext) ){ continue; }
+                context.put(lTableName,l );
+                context.put(rTableName,r);
+                if (! joinExpression.test(context) ){ continue; }
                 JSONObject p = new JSONObject();
                 for ( String f : fields ){
                     String[] arr = f.split("\\.");

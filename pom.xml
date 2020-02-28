@@ -77,7 +77,7 @@ limitations under the License.
         <dependency>
             <groupId>org.zoomba-lang</groupId>
             <artifactId>zoomba.lang.core</artifactId>
-            <version>0.1-beta2</version>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
         <!-- SQL Parsing -->
         <dependency>

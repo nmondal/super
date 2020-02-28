@@ -12,6 +12,8 @@ public class SQLModel {
 
     public final String sql;
 
+    public String dialect = "zoomba" ;
+
     public final List<Statement> statements;
 
     public final Map<String,String> tables;
